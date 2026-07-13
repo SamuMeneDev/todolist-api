@@ -10,9 +10,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import samumene.todolist.dto.request.UsuarioLoginRequest;
 import samumene.todolist.dto.request.UsuarioRegisterRequest;
+import samumene.todolist.dto.response.TokenResponse;
+import samumene.todolist.dto.response.UsuarioResponse;
 import samumene.todolist.entity.Usuario;
+import samumene.todolist.mapper.UsuarioMapper;
 import samumene.todolist.repository.UsuarioRepository;
 
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -22,16 +26,18 @@ public class UsuarioService implements UserDetailsService {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
+    private final UsuarioMapper usuarioMapper;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, @Lazy AuthenticationManager authenticationManager, TokenService tokenService, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository, @Lazy AuthenticationManager authenticationManager, TokenService tokenService, PasswordEncoder passwordEncoder, UsuarioMapper usuarioMapper) {
         this.usuarioRepository = usuarioRepository;
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
         this.passwordEncoder = passwordEncoder;
+        this.usuarioMapper = usuarioMapper;
     }
 
-    public Usuario findById(Long id) {
-        return this.usuarioRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    public UsuarioResponse findById(Long id) {
+        return this.usuarioMapper.toDTO(this.usuarioRepository.findById(id).orElseThrow(NoSuchElementException::new));
     }
 
     public void register(UsuarioRegisterRequest request) {
@@ -46,10 +52,15 @@ public class UsuarioService implements UserDetailsService {
         this.usuarioRepository.save(usuario);
     }
 
-    public String login(UsuarioLoginRequest request) {
+    public TokenResponse login(UsuarioLoginRequest request) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(request.email(), request.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-        return this.tokenService.generateToken((Usuario) Objects.requireNonNull(auth.getPrincipal()));
+
+        return new TokenResponse(
+                this.tokenService.generateToken((Usuario) Objects.requireNonNull(auth.getPrincipal())),
+                request.email(),
+                LocalDateTime.now()
+        );
     }
 
     @Override

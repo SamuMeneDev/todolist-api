@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import samumene.todolist.enumeration.UsuarioRoles;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,10 +33,10 @@ public class Usuario implements UserDetails {
     private String senha;
 
     @OneToMany(mappedBy = "usuario")
-    private List<Tarefa> tarefas;
+    private List<Tarefa> tarefas = new ArrayList<>();
 
     @OneToMany(mappedBy = "usuario")
-    private List<Categoria> categorias;
+    private List<Categoria> categorias = new ArrayList<>();
 
 
     // User Details

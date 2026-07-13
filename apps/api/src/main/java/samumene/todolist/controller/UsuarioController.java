@@ -7,7 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import samumene.todolist.dto.request.UsuarioLoginRequest;
 import samumene.todolist.dto.request.UsuarioRegisterRequest;
-import samumene.todolist.entity.Usuario;
+import samumene.todolist.dto.response.TokenResponse;
+import samumene.todolist.dto.response.UsuarioResponse;
 import samumene.todolist.service.UsuarioService;
 
 @RestController
@@ -20,8 +21,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> findById(@PathVariable Long id) {
-        Usuario usuario = this.usuarioService.findById(id);
+    public ResponseEntity<UsuarioResponse> findById(@PathVariable Long id) {
+        UsuarioResponse usuario = this.usuarioService.findById(id);
         return ResponseEntity.ok(usuario);
     }
 
@@ -32,8 +33,8 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid UsuarioLoginRequest request) {
-        String token = this.usuarioService.login(request);
+    public ResponseEntity<TokenResponse> login(@RequestBody @Valid UsuarioLoginRequest request) {
+        TokenResponse token = this.usuarioService.login(request);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 }

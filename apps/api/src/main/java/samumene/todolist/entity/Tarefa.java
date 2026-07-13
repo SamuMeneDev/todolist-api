@@ -1,5 +1,6 @@
 package samumene.todolist.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,8 +29,10 @@ public class Tarefa {
     private LocalDateTime dataFim;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(255)")
     private StatusTarefa status;
 
+    @JsonIgnore
     @ManyToOne
     private Usuario usuario;
 }
