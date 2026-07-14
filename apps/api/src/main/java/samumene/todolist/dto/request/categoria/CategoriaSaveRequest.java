@@ -1,4 +1,4 @@
-package samumene.todolist.dto.request;
+package samumene.todolist.dto.request.categoria;
 
 import jakarta.validation.constraints.NotBlank;
 

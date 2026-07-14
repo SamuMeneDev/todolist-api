@@ -1,9 +1,9 @@
 package samumene.todolist.service;
 
 import org.springframework.stereotype.Service;
-import samumene.todolist.dto.request.CategoriaChangeStatusRequest;
-import samumene.todolist.dto.request.CategoriaEditRequest;
-import samumene.todolist.dto.request.CategoriaSaveRequest;
+import samumene.todolist.dto.request.categoria.CategoriaChangeStatusRequest;
+import samumene.todolist.dto.request.categoria.CategoriaEditRequest;
+import samumene.todolist.dto.request.categoria.CategoriaSaveRequest;
 import samumene.todolist.dto.response.CategoriaResponse;
 import samumene.todolist.entity.Categoria;
 import samumene.todolist.entity.Usuario;

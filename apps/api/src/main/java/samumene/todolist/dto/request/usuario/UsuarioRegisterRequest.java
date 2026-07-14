@@ -1,4 +1,4 @@
-package samumene.todolist.dto.request;
+package samumene.todolist.dto.request.usuario;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
