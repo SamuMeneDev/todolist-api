@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import samumene.todolist.dto.request.CategoriaChangeStatusRequest;
+import samumene.todolist.dto.request.CategoriaEditRequest;
 import samumene.todolist.dto.request.CategoriaSaveRequest;
 import samumene.todolist.dto.response.CategoriaResponse;
 import samumene.todolist.entity.Usuario;
@@ -59,13 +60,30 @@ public class CategoriaController {
      * @param request Objeto da requisição.
      * @param usuario Referência do usuário autenticado.
      */
-    @PatchMapping("/{id}")
+    @PatchMapping("/status/{id}")
     public ResponseEntity<Void> changeStatus(
             @PathVariable Long id,
             @RequestBody @Valid CategoriaChangeStatusRequest request,
             @AuthenticationPrincipal Usuario usuario
     ) {
         this.categoriaService.changeStatus(id, request, usuario);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+    /** Edita os dados de uma categoria de um usuário
+     *
+     * @param id Id da categoria.
+     * @param request Objeto de requisição com as ropriedades editadas.
+     * @param usuario Referência do usuário autenticado.
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> edit(
+            @PathVariable Long id,
+            @RequestBody @Valid CategoriaEditRequest request,
+            @AuthenticationPrincipal Usuario usuario
+    ) {
+        this.categoriaService.edit(id, request, usuario);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

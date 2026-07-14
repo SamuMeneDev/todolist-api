@@ -2,6 +2,7 @@ package samumene.todolist.service;
 
 import org.springframework.stereotype.Service;
 import samumene.todolist.dto.request.CategoriaChangeStatusRequest;
+import samumene.todolist.dto.request.CategoriaEditRequest;
 import samumene.todolist.dto.request.CategoriaSaveRequest;
 import samumene.todolist.dto.response.CategoriaResponse;
 import samumene.todolist.entity.Categoria;
@@ -43,7 +44,7 @@ public class CategoriaService {
 
     public List<CategoriaResponse> findAll(Usuario usuario, CategoriaQueryFilter queryFilter) {
         return this.categoriaMapper
-                .toDTOList(this.categoriaRepository.findAllByUsuario(usuario, queryFilter.getSpecification()));
+            .toDTOList(this.categoriaRepository.findAllByUsuario(usuario, queryFilter.getSpecification()));
     }
 
     public void changeStatus(Long idCategoria, CategoriaChangeStatusRequest request, Usuario usuario) {
@@ -61,6 +62,20 @@ public class CategoriaService {
         }
 
         categoria.setStatus(StatusCategoria.valueOf(request.status()));
+
+        this.categoriaRepository.save(categoria);
+    }
+
+    public void edit(Long idCategoria, CategoriaEditRequest request, Usuario usuario) {
+        Categoria categoria = this.categoriaRepository.findByIdAndStatus(idCategoria, StatusCategoria.ATIVA)
+                .orElseThrow(NoSuchElementException::new);
+        // Tentando mudar tarefa de outro usuário
+        if(!categoria.getUsuario().getId().equals(usuario.getId())) {
+            throw new IllegalArgumentException();
+        }
+
+        categoria.setTitulo(request.titulo());
+        categoria.setDescricao(request.descricao());
 
         this.categoriaRepository.save(categoria);
     }
