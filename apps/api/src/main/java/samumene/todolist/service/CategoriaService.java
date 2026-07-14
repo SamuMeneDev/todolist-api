@@ -28,10 +28,6 @@ public class CategoriaService {
     }
 
     public void save(CategoriaSaveRequest request, Usuario usuario) {
-        // Se não estiver autenticado
-        if(Objects.isNull(usuario)) {
-            throw new IllegalArgumentException("Não autorizado");
-        }
 
         var categoria = new Categoria();
         categoria.setTitulo(request.titulo());
@@ -50,11 +46,6 @@ public class CategoriaService {
     public void changeStatus(Long idCategoria, CategoriaChangeStatusRequest request, Usuario usuario) {
         Categoria categoria = this.categoriaRepository.findById(idCategoria)
                 .orElseThrow(NoSuchElementException::new);
-
-        // Se não estiver autenticado
-        if(Objects.isNull(usuario)) {
-            throw new IllegalArgumentException("Não autorizado");
-        }
 
         // Tentando mudar categoria de outro usuário
         if(!categoria.getUsuario().getId().equals(usuario.getId())) {
@@ -81,11 +72,6 @@ public class CategoriaService {
     }
 
     public void deleteById(Long id, Usuario usuario) {
-        // Se não estiver autenticado
-        if(Objects.isNull(usuario)) {
-            throw new IllegalArgumentException("Não autorizado");
-        }
-
         Categoria categoria = this.categoriaRepository.findById(id)
                 .orElseThrow(IllegalArgumentException::new);
 
