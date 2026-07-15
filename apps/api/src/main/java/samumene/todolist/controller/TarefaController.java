@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import samumene.todolist.dto.request.tarefa.TarefaEditRequest;
 import samumene.todolist.dto.request.tarefa.TarefaSaveRequest;
 import samumene.todolist.dto.response.TarefaResponse;
 import samumene.todolist.entity.Usuario;
@@ -48,4 +49,49 @@ public class TarefaController {
         var lista = this.tarefaService.findAll(usuario);
         return ResponseEntity.ok(lista);
     }
+
+    /** Endpoint que alterna o status da tarefa entre PENDENTE e CONCLUIDA.
+     *
+     * @param id Id da tarefa.
+     * @param usuario Referêcia do usuário autenticado.
+     */
+    @PatchMapping("/toggle/{id}")
+    public ResponseEntity<Void> changeStatus(
+            @PathVariable Long id,
+            @AuthenticationPrincipal Usuario usuario
+    ) {
+        this.tarefaService.toggleTarefa(id, usuario);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /** Deleta uma tarefa.
+     *
+     * @param id Id da tarefa.
+     * @param usuario Referência do usuaário autenticado.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(
+            @PathVariable Long id,
+            @AuthenticationPrincipal Usuario usuario
+    ) {
+        this.tarefaService.delete(id, usuario);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /** Endpoint para edição das propriedades de uma tarefa.
+     *
+     * @param id Id da Tarefa.
+     * @param request Objeto de requisição com os campos que serão editados.
+     * @param usuario Referência do usuário autenticado.
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> edit(
+            @PathVariable Long id,
+            @RequestBody @Valid TarefaEditRequest request,
+            @AuthenticationPrincipal Usuario usuario
+    ) {
+        this.tarefaService.edit(id, request, usuario);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

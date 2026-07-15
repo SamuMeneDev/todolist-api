@@ -14,10 +14,9 @@ import samumene.todolist.repository.CategoriaRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 @Service
-public class CategoriaService {
+public class CategoriaService implements InnerResourceValidation<Usuario, Categoria> {
 
     private final CategoriaRepository categoriaRepository;
     private final CategoriaMapper categoriaMapper;
@@ -48,9 +47,7 @@ public class CategoriaService {
                 .orElseThrow(NoSuchElementException::new);
 
         // Tentando mudar categoria de outro usuário
-        if(!categoria.getUsuario().getId().equals(usuario.getId())) {
-            throw new IllegalArgumentException();
-        }
+        this.validateInnerResource(usuario, categoria);
 
         categoria.setStatus(StatusCategoria.valueOf(request.status()));
 
@@ -60,10 +57,9 @@ public class CategoriaService {
     public void edit(Long idCategoria, CategoriaEditRequest request, Usuario usuario) {
         Categoria categoria = this.categoriaRepository.findByIdAndStatus(idCategoria, StatusCategoria.ATIVA)
                 .orElseThrow(NoSuchElementException::new);
+
         // Tentando mudar tarefa de outro usuário
-        if(!categoria.getUsuario().getId().equals(usuario.getId())) {
-            throw new IllegalArgumentException();
-        }
+        this.validateInnerResource(usuario, categoria);
 
         categoria.setTitulo(request.titulo());
         categoria.setDescricao(request.descricao());
@@ -76,10 +72,15 @@ public class CategoriaService {
                 .orElseThrow(IllegalArgumentException::new);
 
         // Tentando deletar categoria de outros usuário
-        if(!categoria.getUsuario().getId().equals(usuario.getId())) {
-            throw new IllegalArgumentException();
-        }
+        this.validateInnerResource(usuario, categoria);
 
         this.categoriaRepository.deleteById(id);
+    }
+
+    @Override
+    public void validateInnerResource(Usuario entity, Categoria resource) {
+        if(!resource.getUsuario().getId().equals(entity.getId())) {
+            throw new IllegalArgumentException();
+        }
     }
 }

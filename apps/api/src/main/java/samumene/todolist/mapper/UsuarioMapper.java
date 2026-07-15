@@ -5,4 +5,4 @@ import samumene.todolist.dto.response.UsuarioResponse;
 import samumene.todolist.entity.Usuario;
 
 @Mapper(componentModel = "spring")
-public interface UsuarioMapper extends DTOEntityParser<UsuarioResponse, Usuario>, EntityDTOParser<UsuarioResponse, Usuario> {}
+public interface UsuarioMapper extends EntityDTOParser<UsuarioResponse, Usuario> {}
