@@ -1,5 +1,6 @@
 package samumene.todolist.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/categoria")
+@Tag(name = "Categoria Controller", description = "Controller das categorias das tarefas")
 public class CategoriaController {
 
     private final CategoriaService categoriaService;

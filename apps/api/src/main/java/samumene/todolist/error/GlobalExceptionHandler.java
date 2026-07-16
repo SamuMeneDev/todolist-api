@@ -1,10 +1,6 @@
 package samumene.todolist.error;
 
-import jakarta.annotation.Resource;
-import org.springframework.context.MessageSource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -12,7 +8,6 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import samumene.todolist.dto.response.ExceptionResponse;
 
 import javax.naming.AuthenticationException;
@@ -21,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
 @RestControllerAdvice
-public class GlobalExceptionHandle {
+public class GlobalExceptionHandler {
     private ExceptionResponse responseError(String message, HttpStatus statusCode) {
         return new ExceptionResponse(
                 LocalDateTime.now(),

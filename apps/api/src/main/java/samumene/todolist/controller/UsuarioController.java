@@ -1,6 +1,7 @@
 package samumene.todolist.controller;
 
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import samumene.todolist.service.UsuarioService;
 
 @RestController
 @RequestMapping("/usuario")
+@Tag(name = "Usuario Controller", description = "Controller de acesso e registro dos usuários")
 public class UsuarioController {
     private final UsuarioService usuarioService;
 

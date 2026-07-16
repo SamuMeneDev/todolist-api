@@ -1,5 +1,6 @@
 package samumene.todolist.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RequestMapping("/tarefa")
 @RestController
+@Tag(name = "Tarefa Controller", description = "Controller das tarefas do usuário")
 public class TarefaController {
 
     private final TarefaService tarefaService;
