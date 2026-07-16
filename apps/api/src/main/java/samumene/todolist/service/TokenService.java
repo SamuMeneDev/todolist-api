@@ -3,8 +3,8 @@ package samumene.todolist.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import samumene.todolist.entity.Usuario;
 
@@ -14,7 +14,8 @@ import java.time.Instant;
 @Service
 public class TokenService {
 
-    private final String secret = "teste";
+    @Value("${api.security.token.secret}")
+    private String secret;
 
     public String generateToken(Usuario usuario) {
         Algorithm algorithm = Algorithm.HMAC256(secret);
