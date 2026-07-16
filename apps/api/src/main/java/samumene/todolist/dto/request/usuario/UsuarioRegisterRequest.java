@@ -4,6 +4,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+/**
+ * DTO de requisição para cadastrar um novo usuário no sistema.
+ *
+ * @param nome Nome do usuário.
+ * @param email Email do usuário.
+ * @param senha Senha do usuário.
+ */
 public record UsuarioRegisterRequest(
         @NotBlank(message = "O nome é obrigatório")
         String nome,

@@ -1,10 +1,13 @@
 package samumene.todolist.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import samumene.todolist.config.SecurityConfig;
 import samumene.todolist.dto.request.tarefa.TarefaEditRequest;
 import samumene.todolist.dto.request.tarefa.TarefaSaveRequest;
 import samumene.todolist.dto.response.TarefaResponse;
@@ -16,14 +19,19 @@ import java.util.List;
 
 @RequestMapping("/tarefa")
 @RestController
+@SecurityRequirement(name = SecurityConfig.SECURITY)
+@Tag(name = "Tarefa Controller", description = "Controller das tarefas do usuário")
 public class TarefaController {
 
+    // Dependências
     private final TarefaService tarefaService;
 
+    // Injeção de dependência
     public TarefaController(TarefaService tarefaService) {
         this.tarefaService = tarefaService;
     }
 
+    // Métodos (Endpoints)
     /** Salva uma nova tarefa para o usuário.
      *
      * @param request Objeto de requisição.

@@ -9,24 +9,37 @@ import samumene.todolist.enumeration.StatusTarefa;
 
 import java.time.LocalDateTime;
 
+/**
+ * Métodos que filtram uma query de {@link Tarefa}
+ */
 public class TarefaSpec {
-
+    /**
+     * Filtra as categorias pertencentes ao usuario.
+     * @param usuario Referência do usuário.
+     */
     public static Specification<Tarefa> usuarioEquals(Usuario usuario) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(
                 root.join("usuario").get("id"), usuario.getId()
         );
     }
-
-    public static Specification<Tarefa> categoriaEquals(String categoria) {
+    /**
+     * Filtra as tarefas pelo nome da categoria.
+     * @param nomeCategoria Nome da categoria.
+     */
+    public static Specification<Tarefa> categoriaEquals(String nomeCategoria) {
         return (root, query, criteriaBuilder) -> {
-            if(ObjectUtils.isEmpty(categoria)) {
+            if(ObjectUtils.isEmpty(nomeCategoria)) {
                 return null;
             } else {
-                return criteriaBuilder.like(root.join("categoria").get("titulo"), categoria + "%");
+                return criteriaBuilder.like(root.join("categoria").get("titulo"), nomeCategoria + "%");
             }
         };
     }
-
+    /**
+     * Filtra as tarefas pelo status.
+     *
+     * @param status Nome do status filtrado, baseado em {@link StatusTarefa}
+     */
     public static Specification<Tarefa> statusEquals(String status) {
         return (root, query, criteriaBuilder) -> {
             if(ObjectUtils.isEmpty(status)) {
@@ -36,8 +49,11 @@ public class TarefaSpec {
             }
         };
     }
-
-    public static Specification<Tarefa> dataInicioStarts(LocalDateTime dataInicio) {
+    /**
+     * Filtra as tarefas pela periodo da data de inicio.
+     * @param dataInicio data de inicio das tarefas.
+     */
+    public static Specification<Tarefa> dataInicio(LocalDateTime dataInicio) {
         return (root, query, criteriaBuilder) -> {
           if(ObjectUtils.isEmpty(dataInicio)) {
               return null;
@@ -46,36 +62,17 @@ public class TarefaSpec {
           }
         };
     }
-
-    public static Specification<Tarefa> dataInicioEnds(LocalDateTime dataInicio) {
-        return (root, query, criteriaBuilder) -> {
-            if(ObjectUtils.isEmpty(dataInicio)) {
-                return null;
-            } else {
-                return criteriaBuilder.lessThanOrEqualTo(root.get("dataInicio"), dataInicio);
-            }
-        };
-    }
-
-
-    public static Specification<Tarefa> dataFimStarts(LocalDateTime dataFim) {
+    /**
+     * Filtra as tarefas pela periodo da data de término.
+     * @param dataFim periodo da data de término das tarefas.
+     */
+    public static Specification<Tarefa> dataFim(LocalDateTime dataFim) {
         return (root, query, criteriaBuilder) -> {
             if(ObjectUtils.isEmpty(dataFim)) {
                 return null;
             } else {
                 return criteriaBuilder.and(criteriaBuilder.greaterThan(root.get("dataFim"), dataFim),
                     criteriaBuilder.isNotNull(root.get("dataFim")));
-            }
-        };
-    }
-
-    public static Specification<Tarefa> dataFimEnds(LocalDateTime dataFim) {
-        return (root, query, criteriaBuilder) -> {
-            if(ObjectUtils.isEmpty(dataFim)) {
-                return null;
-            } else {
-                return criteriaBuilder.and(criteriaBuilder.isNotNull(root.get("dataFim")),
-                        criteriaBuilder.lessThanOrEqualTo(root.get("dataFim"), dataFim));
             }
         };
     }

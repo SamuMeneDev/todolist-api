@@ -17,19 +17,30 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+
+/**
+ * Classe de serviço que impõe regras de negócio relacionadas à {@link Tarefa}
+ */
 @Service
 public class TarefaService implements InnerResourceValidation<Usuario, Tarefa> {
-
+    // Dependências
     private final TarefaRepository tarefaRepository;
     private final CategoriaRepository categoriaRepository;
     private final TarefaMapper tarefaMapper;
 
+    // Injeção de depencências
     public TarefaService(TarefaRepository tarefaRepository, CategoriaRepository categoriaRepository, TarefaMapper tarefaMapper) {
         this.tarefaRepository = tarefaRepository;
         this.categoriaRepository = categoriaRepository;
         this.tarefaMapper = tarefaMapper;
     }
-
+    // Métodos
+    /**
+     * Faz validações e perssiste uma nova tarefa ao usuário.
+     *
+     * @param request Objeto de requisição.
+     * @param usuario Referência do usuário autenticado.
+     */
     public void save(TarefaSaveRequest request, Usuario usuario) {
         Tarefa tarefa = new Tarefa();
         tarefa.setTitulo(request.titulo());
@@ -46,16 +57,26 @@ public class TarefaService implements InnerResourceValidation<Usuario, Tarefa> {
         }
 
         tarefa.setStatus(StatusTarefa.PENDENTE);
-
         this.tarefaRepository.save(tarefa);
     }
-
+    /**
+     * Busca todas as tarefas de um usuário, aplicando filtragem na busca
+     *
+     * @param usuario Referência do usuário autenticado.
+     * @param queryFilter Filtros de busca.
+     * @return Retorna lista das tarefas do usuario com aplicação dos filtros.
+     */
     public List<TarefaResponse> findAll(Usuario usuario, TarefaQueryFilter queryFilter) {
         // Passando o usuario para a specification
         queryFilter.setUsuario(usuario);
         return this.tarefaMapper.toDTOList(this.tarefaRepository.findAll(queryFilter.getSpecification()));
     }
-
+    /**
+     * Troca o status de uma tarefa entre pendente e concluída
+     *
+     * @param idTarefa Id da tarefa.
+     * @param usuario Referência do usuário autenticado.
+     */
     public void toggleTarefa(Long idTarefa, Usuario usuario) {
         Tarefa tarefa = this.tarefaRepository.findById(idTarefa)
                 .orElseThrow(()->new NoSuchElementException("Tarefa não encontrada"));
@@ -70,7 +91,13 @@ public class TarefaService implements InnerResourceValidation<Usuario, Tarefa> {
 
         this.tarefaRepository.save(tarefa);
     }
-
+    /**
+     * Edita os dados de uma tarefa de um usuário.
+     *
+     * @param idTarefa Id da tarefa.
+     * @param request Objeto de requisição.
+     * @param usuario Referência do usuário autenticado.
+     */
     public void edit(Long idTarefa, TarefaEditRequest request, Usuario usuario) {
 
         Tarefa tarefa = this.tarefaRepository.findById(idTarefa)
@@ -91,7 +118,12 @@ public class TarefaService implements InnerResourceValidation<Usuario, Tarefa> {
         }
         this.tarefaRepository.save(tarefa);
     }
-
+    /**
+     * Deleta uma tarefa de um usuário.
+     *
+     * @param idTarefa Id da tarefa.
+     * @param usuario Referência do usuário autenticado.
+     */
     public void delete(Long idTarefa, Usuario usuario) {
         Tarefa tarefa = this.tarefaRepository.findById(idTarefa)
                 .orElseThrow(()->new NoSuchElementException("Tarefa não encontrada"));
@@ -101,7 +133,7 @@ public class TarefaService implements InnerResourceValidation<Usuario, Tarefa> {
         this.tarefaRepository.deleteById(idTarefa);
     }
 
-
+    // Implemetações
     @Override
     public void validateInnerResource(Usuario entity, Tarefa resource) {
         // Tentando trocar tarefa de outro usuário
