@@ -28,8 +28,9 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    // Métodos
-    /** Busca os dados de um usuário.
+    // Métodos (Endpoints)
+    /**
+     * Busca os dados de um usuário.
      *
      * @param id Id do usuário.
      * @return Retorna o objeto do usuario com o respectivo Id.
@@ -39,8 +40,8 @@ public class UsuarioController {
         UsuarioResponse usuario = this.usuarioService.findById(id);
         return ResponseEntity.ok(usuario);
     }
-
-    /** Endpoint para cadastro de um novo usuário.
+    /**
+     * Endpoint para cadastro de um novo usuário.
      *
      * @param request Objeto de requisição.
      */
@@ -49,8 +50,8 @@ public class UsuarioController {
         this.usuarioService.register(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-    /** Endpoint de login
+    /**
+     * Endpoint de login
      *
      * @param request Objeto de requisição.
      * @return Token do usuario.

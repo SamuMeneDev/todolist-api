@@ -3,6 +3,7 @@ package samumene.todolist.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,8 +32,9 @@ public class CategoriaController {
     public CategoriaController(CategoriaService categoriaService) {
         this.categoriaService = categoriaService;
     }
-
-    /** Cria uma nova categoria de tarefas.
+    // Métodos (Endpoints)
+    /**
+     * Cria uma nova categoria de tarefas.
      *
      * @param request Objeto de requisição
      * @param usuario Referência do usuario autenticado
@@ -46,7 +48,8 @@ public class CategoriaController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    /** Busca todas as categorias do usuário.
+    /**
+     * Busca todas as categorias do usuário.
      *
      * @param usuario Referência do usuário autenticado.
      * @return Lista de Categorias.
@@ -54,14 +57,13 @@ public class CategoriaController {
     @GetMapping("/findAll")
     public ResponseEntity<List<CategoriaResponse>> findAll(
             @AuthenticationPrincipal Usuario usuario,
-            CategoriaQueryFilter queryFilter
+            @ParameterObject CategoriaQueryFilter queryFilter
     ) {
         var lista = this.categoriaService.findAll(usuario, queryFilter);
         return ResponseEntity.ok(lista);
     }
-
-
-    /** Endpoint que muda o status da categoria.
+    /**
+     * Endpoint que muda o status da categoria.
      *
      * @param id Id da categoria.
      * @param request Objeto da requisição.
@@ -76,9 +78,8 @@ public class CategoriaController {
         this.categoriaService.changeStatus(id, request, usuario);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
-    /** Edita os dados de uma categoria de um usuário
+    /**
+     * Edita os dados de uma categoria de um usuário
      *
      * @param id Id da categoria.
      * @param request Objeto de requisição com as ropriedades editadas.
@@ -94,7 +95,8 @@ public class CategoriaController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    /** Deleta uma categoria.
+    /**
+     * Deleta uma categoria.
      *
      * @param id Id da categoria.
      * @param usuario Referência do usuário autenticado.
@@ -107,5 +109,4 @@ public class CategoriaController {
         this.categoriaService.deleteById(id, usuario);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

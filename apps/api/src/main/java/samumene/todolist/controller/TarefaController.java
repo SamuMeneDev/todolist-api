@@ -3,6 +3,7 @@ package samumene.todolist.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,7 +33,8 @@ public class TarefaController {
     }
 
     // Métodos (Endpoints)
-    /** Salva uma nova tarefa para o usuário.
+    /**
+     * Salva uma nova tarefa para o usuário.
      *
      * @param request Objeto de requisição.
      * @param usuario Referência do usuaário autenticado.
@@ -45,8 +47,8 @@ public class TarefaController {
         this.tarefaService.save(request, usuario);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-    /** Lista todas as tarefa de um usuário
+    /**
+     * Lista todas as tarefa de um usuário
      *
      * @param usuario Referência do usuario autenticado.
      * @return Lista de todas as tarefas do usuario
@@ -54,13 +56,13 @@ public class TarefaController {
     @GetMapping("/findAll")
     public ResponseEntity<List<TarefaResponse>> findAll(
             @AuthenticationPrincipal Usuario usuario,
-            TarefaQueryFilter queryFilter
+            @ParameterObject TarefaQueryFilter queryFilter
     ) {
         var lista = this.tarefaService.findAll(usuario, queryFilter);
         return ResponseEntity.ok(lista);
     }
-
-    /** Endpoint que alterna o status da tarefa entre PENDENTE e CONCLUIDA.
+    /**
+     * Endpoint que alterna o status da tarefa entre PENDENTE e CONCLUIDA.
      *
      * @param id Id da tarefa.
      * @param usuario Referêcia do usuário autenticado.
@@ -73,8 +75,8 @@ public class TarefaController {
         this.tarefaService.toggleTarefa(id, usuario);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    /** Deleta uma tarefa.
+    /**
+     * Deleta uma tarefa.
      *
      * @param id Id da tarefa.
      * @param usuario Referência do usuaário autenticado.
@@ -87,8 +89,8 @@ public class TarefaController {
         this.tarefaService.delete(id, usuario);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    /** Endpoint para edição das propriedades de uma tarefa.
+    /**
+     * Endpoint para edição das propriedades de uma tarefa.
      *
      * @param id Id da Tarefa.
      * @param request Objeto de requisição com os campos que serão editados.
@@ -103,5 +105,4 @@ public class TarefaController {
         this.tarefaService.edit(id, request, usuario);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }
