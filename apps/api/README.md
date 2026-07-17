@@ -4,6 +4,11 @@ API REST de lista de tarefas, construido como projeto prático do bootcamp de Sp
 e Angular da DIO com o Santander.
 
 ## Principais tecnologias
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=java,spring,maven,postgres" />
+  </a>
+</p>
 
 ## Diagrama de Classes
 ```mermaid
