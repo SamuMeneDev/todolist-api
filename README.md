@@ -4,7 +4,8 @@
 Projeto prático desenvolvido em um bootcamp fullstack da DIO com o Santander
 
 ## Ver também
-- <a href="https://todolist-api-production-1f42.up.railway.app/swagger-ui/index.html">Documentação da API com swagger</a>
+
+- <a href="https://https://todolist-api-samumene.up.railway.app/swagger-ui/index.html">Documentação da API com swagger</a>
 - <a href="./CHANGELOG.md">Changelog das versões</a>
 - <a href="./apps/api/README.md">README da API</a>
 
